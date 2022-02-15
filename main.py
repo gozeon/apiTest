@@ -38,17 +38,18 @@ class Report():
 
         writer = pd.ExcelWriter(self.excel_file, engine='xlsxwriter')
 
-        # doc: https://jike.in/?qa=960238/python-using-pandas-to-format-excel-cell
-        def f(x):
-            col = "valid"
-            r = 'background-color: red'
-            g = 'background-color: green'
-            c = np.where(x[col] == True, g, r)
-            y = pd.DataFrame('', index=x.index, columns=x.columns)
-            y[col] = c
-            return y
+        if len(self.data()):
+            # doc: https://jike.in/?qa=960238/python-using-pandas-to-format-excel-cell
+            def f(x):
+                col = "valid"
+                r = 'background-color: red'
+                g = 'background-color: green'
+                c = np.where(x[col] == True, g, r)
+                y = pd.DataFrame('', index=x.index, columns=x.columns)
+                y[col] = c
+                return y
 
-        df = df.style.apply(f, axis=None)
+            df = df.style.apply(f, axis=None)
         df.to_excel(writer, sheet_name=self.sheet_name, index=False, startrow=20)
 
         # Access the XlsxWriter workbook and worksheet objects from the dataframe.
